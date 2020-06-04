@@ -13,6 +13,7 @@ From: continuumio/anaconda3
      /opt/conda/bin/conda install -c conda-forge -y --quiet \
           jupyterlab notebook \
           pandas matplotlib scipy \
-          scikit-learn scikit-learn-extra
+          scikit-learn scikit-learn-extra \
+          bash_kernel
      apt-get autoremove -y
      apt-get clean
