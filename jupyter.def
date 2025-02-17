@@ -1,0 +1,21 @@
+BootStrap: docker
+From: condaforge/miniforge3:24.11.3-0
+
+%labels
+     Author thomas.sell@bih-charite.de
+     Version 0.3
+
+%post
+     # Install jupyter notebook and friends
+     /opt/conda/bin/conda install -c conda-forge -y --quiet \
+          python=3.11 jupyterlab notebook \
+          pandas matplotlib scipy \
+          scikit-learn scikit-learn-extra
+     apt-get autoremove -y
+     apt-get clean
+
+%runscript
+     echo "Starting notebook..."
+     echo "Open browser to localhost:8888"
+     exec /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8888 --no-browser --allow-root
+
