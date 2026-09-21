@@ -1,21 +1,23 @@
 BootStrap: docker
-From: condaforge/miniforge3:24.11.3-0
+From: mambaorg/micromamba:latest
 
-%labels
-     Author thomas.sell@bih-charite.de
-     Version 0.3
+%environment
+    export PATH=/opt/conda/bin:$PATH
 
 %post
-     # Install jupyter notebook and friends
-     /opt/conda/bin/conda install -c conda-forge -y --quiet \
-          python=3.11 jupyterlab notebook \
-          pandas matplotlib scipy \
-          scikit-learn scikit-learn-extra
-     apt-get autoremove -y
-     apt-get clean
+    micromamba install -y -n base -c conda-forge \
+        python=3.11 jupyterlab notebook \
+        pandas polars pyarrow \
+        matplotlib scipy \
+        scikit-learn scikit-learn-extra
+
+    micromamba clean -afy
 
 %runscript
-     echo "Starting notebook..."
-     echo "Open browser to localhost:8888"
-     exec /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='*' --port=8888 --no-browser --allow-root
+    exec /opt/conda/bin/jupyter lab \
+        --ip=0.0.0.0 \
+        --port=8888 \
+        --no-browser \
+        --allow-root \
+        "$@"
 
